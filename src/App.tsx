@@ -14,6 +14,7 @@ import {
 import { clipSrc, validateLayout, validatePack } from "./lib/pack";
 import { KIOSK_GRID_PAGE_SIZE, paginate } from "./lib/paginate";
 import { ARM_HINT, planDeckAudio } from "./lib/play-policy";
+import { gridPageSizeFromSearch, packUrlFromSearch } from "./lib/query";
 import type { CompanionStatus, DeckConfig, DeckKey, DeckLayout, SoundPack } from "./lib/types";
 
 const EMPTY_STATUS: CompanionStatus = {
@@ -43,9 +44,10 @@ export default function App() {
     (async () => {
       const file = await fetchFileConfig();
       const stored = loadStoredOverrides();
+      const queryPack = packUrlFromSearch();
       if (cancelled) return;
       setOverrides(stored);
-      setConfig(mergeConfig(file, stored));
+      setConfig(mergeConfig(file, { ...stored, ...(queryPack ? { packUrl: queryPack } : {}) }));
     })();
     return () => {
       cancelled = true;
@@ -104,7 +106,8 @@ export default function App() {
   }, [activePage, layout]);
 
   const pinnedKeys = activePage?.keys.filter((k) => k.pinned) ?? [];
-  const paged = paginate(gridKeys, gridPage, KIOSK_GRID_PAGE_SIZE);
+  const pageSize = gridPageSizeFromSearch(KIOSK_GRID_PAGE_SIZE);
+  const paged = paginate(gridKeys, gridPage, pageSize);
 
   const playLocal = useCallback((src: string) => {
     const audio = audioRef.current ?? new Audio();
@@ -167,7 +170,7 @@ export default function App() {
   };
 
   return (
-    <div className="shell">
+    <div className="shell" data-testid="deck-shell">
       <header className="topbar">
         <div className="brand">
           <span className="brand-mark" aria-hidden />
@@ -178,6 +181,7 @@ export default function App() {
             <button
               key={page.id}
               type="button"
+              data-testid={`tab-${page.id}`}
               className={tab === page.id ? "tab is-on" : "tab"}
               onClick={() => {
                 setTab(page.id);
@@ -189,18 +193,22 @@ export default function App() {
           ))}
           <button
             type="button"
+            data-testid="tab-setup"
             className={tab === "setup" ? "tab is-on" : "tab"}
             onClick={() => setTab("setup")}
           >
             Setup
           </button>
         </nav>
-        <div className={`badge${config.simulate ? " is-demo" : status.ok ? " is-ok" : " is-down"}`}>
+        <div
+          className={`badge${config.simulate ? " is-demo" : status.ok ? " is-ok" : " is-down"}`}
+          data-testid="connection-badge"
+        >
           {config.simulate ? "Demo" : status.ok ? "Live hookup" : "Offline"}
         </div>
       </header>
 
-      <div className="scene-rail" aria-label="Scenes">
+      <div className="scene-rail" aria-label="Scenes" data-testid="scene-rail">
         {railKeys.map((key) => (
           <DeckKeyButton
             key={key.id}
@@ -224,7 +232,7 @@ export default function App() {
           />
         ) : (
           <>
-            <div className="grid">
+            <div className="grid" data-testid="key-grid">
               {paged.slice.map((key) => (
                 <DeckKeyButton
                   key={key.id}
@@ -236,7 +244,7 @@ export default function App() {
               ))}
             </div>
             {paged.pages > 1 ? (
-              <div className="pager">
+              <div className="pager" data-testid="pager">
                 <button type="button" className="pager-btn" onClick={() => setGridPage(Math.max(0, paged.page - 1))}>
                   <ChevronLeft size={22} /> Prev
                 </button>
@@ -266,7 +274,7 @@ export default function App() {
             onPress={press}
           />
         ))}
-        <p className="status-msg">{hint}</p>
+        <p className="status-msg" data-testid="status-msg">{hint}</p>
         {status.scene && status.scene !== "—" ? <p className="scene-name">{status.scene}</p> : null}
       </footer>
     </div>

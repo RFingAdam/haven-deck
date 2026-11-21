@@ -20,7 +20,9 @@
     "lint": "oxlint src server scripts",
     "scrub": "node scripts/scrub-check.mjs",
     "synth": "python3 scripts/synth-starter.py",
-    "ci": "npm run scrub && npm run test && npm run lint && npm run build"
+    "ci": "npm run scrub && npm run test && npm run lint && npm run build && npm run test:e2e",
+    "test:e2e": "playwright test",
+    "docs:shots": "npm run build && node scripts/capture-docs.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.77.0",
@@ -28,6 +30,7 @@
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@testing-library/jest-dom": "^8.0.0",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.13",

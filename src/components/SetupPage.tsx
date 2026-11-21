@@ -14,7 +14,7 @@ export function SetupPage({
   onReset: () => void;
 }) {
   return (
-    <section className="setup">
+    <section className="setup" data-testid="setup-page">
       <h1>Setup</h1>
       <p>
         Demo mode is on by default so a first run cannot press Go Live on a real

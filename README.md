@@ -10,6 +10,31 @@ A DIY touchscreen stream deck for a Raspberry Pi, a tablet, or a browser. Load y
 
 Watch it in use on [Twitch](https://www.twitch.tv/swampbewdy) or [YouTube](https://www.youtube.com/@SwampBewdy).
 
+<p align="center">
+  <img src="docs/media/hero.png" alt="Haven Deck on an 800 by 480 kiosk screen in a rounded bezel, Live tab, demo mode" width="100%">
+</p>
+
+### The 800×480 layout
+
+These captures were taken from a headless browser at the official Raspberry Pi touchscreen size, in demo mode.
+
+<p align="center">
+  <img src="docs/media/live-framed.png" alt="Live tab: scene rail, Go Live with double-tap confirm, record controls, Stop All" width="86%">
+</p>
+<p align="center"><sub>Live — scenes stay on a rail at the top; Go Live needs a second tap.</sub></p>
+
+<p align="center">
+  <img src="docs/media/sounds-framed.png" alt="Sounds tab with the six starter tones and the scene rail still visible" width="86%">
+</p>
+<p align="center"><sub>Sounds — drop in your own pack to fill this grid. The scene rail stays put.</sub></p>
+
+<p align="center">
+  <img src="docs/media/setup-framed.png" alt="Setup tab with demo mode on, local preview off, and the kiosk route enabled" width="86%">
+</p>
+<p align="center"><sub>Setup — demo mode stays on until you map buttons to your own Companion or Director.</sub></p>
+
+To regenerate the images: `npm run docs:shots`.
+
 ## Quick start
 
 You need Node.js 20 or later.

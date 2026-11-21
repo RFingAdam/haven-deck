@@ -86,7 +86,7 @@ async function readCompanionVar(label: string, name: string): Promise<string> {
 export async function pollCompanion(config: DeckConfig): Promise<CompanionStatus> {
   const now = Date.now();
   if (config.simulate) {
-    return { ok: true, scene: "Demo", streaming: false, recording: false, updatedAt: now };
+    return { ok: true, scene: "—", streaming: false, recording: false, updatedAt: now };
   }
   try {
     const conn = await fetch("/companion/api/connections", { cache: "no-store", signal: withTimeout() });

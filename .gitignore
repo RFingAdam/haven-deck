@@ -21,3 +21,9 @@ config.json
 !config.example.json
 !public/config.json
 public/packs/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
