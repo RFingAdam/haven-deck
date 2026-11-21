@@ -1,6 +1,6 @@
 # Haven Deck
 
-A DIY touchscreen stream deck for a Raspberry Pi, a tablet, or a browser. Load your own sounds, scenes, and buttons. An alternative to a Stream Deck or Elgato console, not a replacement for one if you already like yours.
+Haven Deck is a DIY touchscreen stream deck for streamers who want to trigger scenes and sounds from a Raspberry Pi, a tablet, or a browser. Load your own buttons. An alternative to a Stream Deck or Elgato console, not a replacement for one if you already like yours.
 
 <p align="center">
   <a href="https://github.com/RFingAdam/haven-deck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/RFingAdam/haven-deck/actions/workflows/ci.yml/badge.svg"></a>
@@ -11,7 +11,14 @@ A DIY touchscreen stream deck for a Raspberry Pi, a tablet, or a browser. Load y
   <a href="https://www.youtube.com/@SwampBewdy"><img alt="YouTube" src="https://img.shields.io/badge/YouTube-%40SwampBewdy-FF0000?logo=youtube&logoColor=white&style=for-the-badge"></a>
 </p>
 
-**This is not the paid "HAVEN Deck" Streamlabs overlay pack**, and it does not include that pack or the paid "Protocol HUD" overlay. Those are third-party products and are not redistributed here. The [Tactical Deck](https://github.com/RFingAdam/tactical-deck) repo has a separate, original OCR overlay also called Protocol HUD. That overlay is Adam's own code. This repo is only the open-source kiosk.
+## SwampBewdy stream tools
+
+| Tool | What it is |
+|---|---|
+| [Haven Deck](https://github.com/RFingAdam/haven-deck) | A touchscreen control panel for scenes and sounds on a Raspberry Pi, a tablet, or a browser. |
+| [Tactical Deck](https://github.com/RFingAdam/tactical-deck) | A soundboard of cinematic stingers, plus Director and HUD helpers that play them on stream. |
+
+They work together: Haven Deck can call Tactical Deck's Director over HTTP, so a tap on the kiosk plays a stinger on the stream computer. You can also use either one on its own.
 
 <p align="center">
   <img src="docs/media/hero.png" alt="Haven Deck on an 800 by 480 kiosk screen in a rounded bezel, Live tab, demo mode" width="100%">
@@ -52,7 +59,7 @@ These captures were taken from a headless browser at the official Raspberry Pi t
 </p>
 <p align="center"><sub>Clean Dark · Neon</sub></p>
 
-Tactical HUD is original styling meant to sit beside a stream overlay. It does not copy any paid pack's assets or design.
+Tactical HUD is original styling meant to sit beside a stream overlay.
 
 #### Add your own theme
 
@@ -165,4 +172,4 @@ For cinematic stream stingers, install the [Tactical Pack](https://github.com/RF
 
 ## Contributing
 
-Open an issue or a pull request. Do not add third-party meme samples, paid overlay assets, or audio you do not have the right to redistribute. Keep configuration examples on `127.0.0.1` or a placeholder host name, never a real machine address.
+Open an issue or a pull request. Do not add third-party meme samples, or audio you do not have the right to redistribute. Keep configuration examples on `127.0.0.1` or a placeholder host name, never a real machine address.

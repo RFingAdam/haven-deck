@@ -1,7 +1,7 @@
 {
   "id": "tactical-hud",
   "label": "Tactical HUD",
-  "description": "A military HUD feel that sits beside a stream overlay. Original styling; not a copy of any paid pack.",
+  "description": "A military HUD feel that sits beside a stream overlay. Original styling.",
   "variables": {
     "--bg": "#050806",
     "--surface": "#0c140f",
