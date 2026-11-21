@@ -71,6 +71,8 @@ export function SetupPage({
         <dd>{config.directorBase}</dd>
         <dt>Pack</dt>
         <dd>{pack ? `${pack.name} (${pack.clips.length} clips)` : config.packUrl}</dd>
+        <dt>Audio hook</dt>
+        <dd>{config.audioHook ? config.audioHook : "Not configured"}</dd>
         <dt>Theme</dt>
         <dd>{config.theme}</dd>
       </dl>

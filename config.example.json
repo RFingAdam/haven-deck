@@ -8,5 +8,6 @@
   "wantLocalPreview": false,
   "bind": "127.0.0.1",
   "port": 4173,
-  "theme": "haven"
+  "theme": "haven",
+  "audioHook": ""
 }

@@ -22,4 +22,10 @@ describe("parseConfig", () => {
     expect(cfg.simulate).toBe(false);
     expect(cfg.wantLocalPreview).toBe(true);
   });
+
+  it("accepts a same-origin audio hook and ignores bad values", () => {
+    expect(parseConfig({ audioHook: "/hooks/audio" }).audioHook).toBe("/hooks/audio");
+    expect(parseConfig({ audioHook: "http://127.0.0.1/hooks/audio" }).audioHook).toBe("");
+    expect(DEFAULT_CONFIG.audioHook).toBe("");
+  });
 });

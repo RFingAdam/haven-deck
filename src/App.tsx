@@ -14,7 +14,8 @@ import {
 } from "./lib/config";
 import { clipSrc, validateLayout, validatePack } from "./lib/pack";
 import { KIOSK_GRID_PAGE_SIZE, paginate } from "./lib/paginate";
-import { ARM_HINT, planDeckAudio } from "./lib/play-policy";
+import { callAudioHook, isAudioHookPath, isStopHookKey } from "./lib/audio-hook";
+import { ARM_HINT, HOOK_HINT, planDeckAudio } from "./lib/play-policy";
 import { gridPageSizeFromSearch, packUrlFromSearch, themeFromSearch } from "./lib/query";
 import { applyTheme, DEFAULT_THEME_ID, loadTheme, loadThemeIndex, type ThemeIndexItem } from "./lib/themes";
 import type { CompanionStatus, DeckConfig, DeckKey, DeckLayout, SoundPack } from "./lib/types";
@@ -149,6 +150,21 @@ export default function App() {
     void audio.play().catch(() => undefined);
   }, []);
 
+  const audioHook = isAudioHookPath(config.audioHook) ? config.audioHook : "";
+
+  useEffect(() => {
+    if (!audioHook) return;
+    const onHide = () => {
+      void callAudioHook(audioHook, { action: "stop" });
+    };
+    window.addEventListener("pagehide", onHide);
+    window.addEventListener("beforeunload", onHide);
+    return () => {
+      window.removeEventListener("pagehide", onHide);
+      window.removeEventListener("beforeunload", onHide);
+    };
+  }, [audioHook]);
+
   const press = useCallback(
     async (key: DeckKey) => {
       if (key.confirmMs && confirmId !== key.id) {
@@ -171,13 +187,25 @@ export default function App() {
         kioskRoute: config.kioskRoute,
         wantLocalPreview: config.wantLocalPreview,
         simulate: config.simulate,
+        armMic,
+        hasAudioHook: Boolean(audioHook),
       });
       const isSound = key.action.type === "play" || Boolean(key.previewSrc);
-      if (isSound && plan === "local" && key.previewSrc) {
+      const clipId = key.action.type === "play" ? key.action.clipId : key.previewClipId;
+      const durationMs = key.previewDurationMs ?? 1000;
+
+      if (audioHook && !config.simulate && armMic && isStopHookKey(key.id)) {
+        const stop = await callAudioHook(audioHook, { action: "stop" });
+        if (!stop.ok) setHint(stop.error || "Audio hook stop failed");
+      } else if (audioHook && plan === "hook" && isSound && clipId) {
+        const result = await callAudioHook(audioHook, { action: "start", clipId, durationMs });
+        setHint(result.ok ? key.label : result.error || "Audio hook failed");
+        return;
+      } else if (isSound && plan === "local" && key.previewSrc) {
         playLocal(clipSrc(config.packUrl, key.previewSrc));
         setHint(`Preview: ${key.label}`);
-      } else if (isSound && plan === "hint" && key.action.type === "play") {
-        setHint(ARM_HINT);
+      } else if (isSound && plan === "hint") {
+        setHint(armMic && !audioHook ? HOOK_HINT : ARM_HINT);
       }
 
       if (key.id === "clip-it") {
@@ -190,7 +218,7 @@ export default function App() {
       else if (!result.ok) setHint(result.error || "Action failed");
       else if (!isSound || plan !== "local") setHint(key.label);
     },
-    [config, confirmId, playLocal],
+    [audioHook, armMic, config, confirmId, playLocal],
   );
 
   const patchConfig = (patch: Partial<DeckConfig>) => {
@@ -232,7 +260,11 @@ export default function App() {
             onClick={() => {
               setArmMic((on) => {
                 const next = !on;
-                setHint(next ? "Mic armed (local)" : "Mic idle");
+                if (!next && audioHook && !config.simulate) {
+                  void callAudioHook(audioHook, { action: "stop" });
+                }
+                if (next && !audioHook) setHint(HOOK_HINT);
+                else setHint(next ? "Mic armed" : "Mic idle");
                 return next;
               });
             }}

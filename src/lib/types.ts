@@ -78,6 +78,8 @@ export type DeckConfig = {
   kioskRoute: boolean;
   wantLocalPreview: boolean;
   theme: string;
+  /** Same-origin /hooks/... path. Empty means Arm Mic has no server hook. */
+  audioHook: string;
 };
 
 export type CompanionStatus = {
