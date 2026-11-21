@@ -147,7 +147,7 @@ Copy the folder to `packs/my-pack/`, point `packUrl` at `/packs/my-pack`, and re
   - `http`: `{ "type": "http", "method": "POST", "url": "/director/stop" }`
   - `scene`, `page`, `toggle`, or `none`
 - Set `confirmMs` on any key that must not fire on a single tap (Go Live uses `2500`)
-- `previewSrc` is a pack-relative WAV used only when local preview is on
+- `previewSrc` is a pack-relative `.wav` or `.mp3` used only when local preview is on. Clips may live under `sounds/`, `songs/`, `spoken/`, or `faces/`.
 
 If you publish a pack, keep a `license` and `credit` on the pack and on each clip. Community packs can use any license you choose. CC BY 4.0 is a good default if you want credit back.
 
@@ -158,6 +158,17 @@ Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0
 ```
 
 For cinematic stream stingers, install the [Tactical Pack](https://github.com/RFingAdam/tactical-deck) (also CC BY 4.0) and point sound keys at its clip ids through Director.
+
+
+## Optional server plugin
+
+A production kiosk can load a local plugin without forking this repo.
+
+- Set `HAVEN_DECK_PLUGIN` to the path of an ES module that exports `handleRequest(req, res, ctx)`. Requests under `/hooks/` are offered to that function first. Return `true` if you handled the request. `ctx` includes `companionBase`, `directorBase`, the file config, and `readBody`.
+- Set `audioHook` in `config.json` (or `HAVEN_DECK_AUDIO_HOOK`) to a same-origin path like `/hooks/audio`. When Arm Mic is on, sound keys POST `{ "action": "start"|"stop", "clipId", "durationMs" }` to that hook instead of playing in the browser. Leave it empty for a standalone deck.
+- Set `HAVEN_DECK_PACK_DIR` to a folder of extra packs, served at `/packs/<name>/`.
+
+The plugin and extra packs stay outside this repository. This tree only provides the generic hook.
 
 ## Licenses
 

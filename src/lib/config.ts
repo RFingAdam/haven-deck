@@ -11,6 +11,7 @@ export const DEFAULT_CONFIG: DeckConfig = {
   kioskRoute: true,
   wantLocalPreview: false,
   theme: "haven",
+  audioHook: "",
 };
 
 function asBool(value: unknown, fallback: boolean): boolean {
@@ -38,7 +39,17 @@ export function parseConfig(raw: unknown, fallback: DeckConfig = DEFAULT_CONFIG)
     kioskRoute: asBool(src.kioskRoute, fallback.kioskRoute),
     wantLocalPreview: asBool(src.wantLocalPreview, fallback.wantLocalPreview),
     theme: asString(src.theme, fallback.theme).toLowerCase(),
+    audioHook: parseAudioHook(src.audioHook, fallback.audioHook),
   };
+}
+
+/** Only same-origin /hooks/... paths are accepted. Anything else is ignored. */
+export function parseAudioHook(value: unknown, fallback = ""): string {
+  const raw = typeof value === "string" ? value.trim() : "";
+  const hook = raw || fallback;
+  if (!hook) return "";
+  if (!/^\/hooks\/[a-z0-9][a-z0-9/_-]*$/.test(hook) || hook.includes("..")) return "";
+  return hook.replace(/\/$/, "");
 }
 
 export function mergeConfig(base: DeckConfig, overlay: Partial<DeckConfig>): DeckConfig {
@@ -51,7 +62,10 @@ export function loadStoredOverrides(): Partial<DeckConfig> {
     const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
     if (!raw) return {};
     const parsed = JSON.parse(raw) as Partial<DeckConfig>;
-    return parsed && typeof parsed === "object" ? parsed : {};
+    if (!parsed || typeof parsed !== "object") return {};
+    // The hook comes from the server config only, never from this device.
+    delete parsed.audioHook;
+    return parsed;
   } catch {
     return {};
   }

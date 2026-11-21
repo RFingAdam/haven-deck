@@ -1,7 +1,7 @@
 import type { DeckLayout, PackClip, SoundPack } from "./types";
 
-const CLIP_ID = /^[a-z][a-z0-9_]{0,31}$/;
-const SAFE_FILE = /^(sounds|faces)\/[A-Za-z0-9._-]+$/;
+const CLIP_ID = /^[a-z][a-z0-9_]{0,47}$/;
+const SAFE_FILE = /^(sounds|songs|spoken|faces)\/[A-Za-z0-9._-]+\.(wav|mp3)$/;
 
 export function validatePack(raw: unknown): SoundPack {
   if (!raw || typeof raw !== "object") throw new Error("pack.json must be an object");
@@ -35,12 +35,12 @@ function validateClip(raw: unknown, index: number): PackClip {
     throw new Error(`clips[${index}].id must be a lowercase identifier (e.g. tap, scene_chime)`);
   }
   const file = mustString(c.file, `clips[${index}].file`);
-  if (!SAFE_FILE.test(file) || !file.toLowerCase().endsWith(".wav")) {
-    throw new Error(`clips[${index}].file must be a .wav under sounds/ or faces/`);
+  if (!SAFE_FILE.test(file)) {
+    throw new Error(`clips[${index}].file must be a .wav or .mp3 under sounds/, songs/, spoken/, or faces/`);
   }
   const seconds = mustNumber(c.seconds, `clips[${index}].seconds`);
-  if (!(seconds > 0) || seconds > 60) {
-    throw new Error(`clips[${index}].seconds must be between 0 and 60`);
+  if (!(seconds > 0) || seconds > 600) {
+    throw new Error(`clips[${index}].seconds must be between 0 and 600`);
   }
   return {
     id,
