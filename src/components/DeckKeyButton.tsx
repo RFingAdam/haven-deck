@@ -25,10 +25,12 @@ export function DeckKeyButton({
       onClick={() => onPress(deckKey)}
     >
       <span className="key-icon">
-        <Icon name={deckKey.icon} />
+        <Icon name={deckKey.icon} size={18} />
       </span>
-      <span className="key-label">{label}</span>
-      {sub ? <span className="key-sub">{sub}</span> : null}
+      <span className="key-text">
+        <span className="key-label">{label}</span>
+        {sub ? <span className="key-sub">{sub}</span> : null}
+      </span>
     </button>
   );
 }

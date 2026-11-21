@@ -18,3 +18,12 @@ export function gridPageSizeFromSearch(fallback: number, search?: string): numbe
   if (!Number.isInteger(value) || value < 2 || value > 12) return fallback;
   return value;
 }
+
+const THEME_ID = /^[a-z][a-z0-9-]{0,31}$/;
+
+/** Optional `?theme=` selector used by docs capture and kiosk bookmarks. */
+export function themeFromSearch(search: string = window.location.search): string | null {
+  const value = new URLSearchParams(search).get("theme");
+  if (!value || !THEME_ID.test(value)) return null;
+  return value;
+}

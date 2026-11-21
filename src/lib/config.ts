@@ -10,6 +10,7 @@ export const DEFAULT_CONFIG: DeckConfig = {
   packUrl: "/packs/starter",
   kioskRoute: true,
   wantLocalPreview: false,
+  theme: "haven",
 };
 
 function asBool(value: unknown, fallback: boolean): boolean {
@@ -36,6 +37,7 @@ export function parseConfig(raw: unknown, fallback: DeckConfig = DEFAULT_CONFIG)
     packUrl: asString(src.packUrl, fallback.packUrl),
     kioskRoute: asBool(src.kioskRoute, fallback.kioskRoute),
     wantLocalPreview: asBool(src.wantLocalPreview, fallback.wantLocalPreview),
+    theme: asString(src.theme, fallback.theme).toLowerCase(),
   };
 }
 

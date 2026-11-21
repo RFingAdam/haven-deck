@@ -21,6 +21,7 @@ config.json
 !config.example.json
 !public/config.json
 public/packs/
+public/themes/
 
 # Playwright
 /test-results/

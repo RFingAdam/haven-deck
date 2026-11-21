@@ -5,5 +5,6 @@
   "directorBase": "http://127.0.0.1:8781",
   "packUrl": "/packs/starter",
   "kioskRoute": true,
-  "wantLocalPreview": false
+  "wantLocalPreview": false,
+  "theme": "haven"
 }

@@ -1,0 +1,20 @@
+{
+  "themes": [
+    {
+      "id": "haven",
+      "label": "Haven"
+    },
+    {
+      "id": "tactical-hud",
+      "label": "Tactical HUD"
+    },
+    {
+      "id": "clean-dark",
+      "label": "Clean Dark"
+    },
+    {
+      "id": "neon",
+      "label": "Neon"
+    }
+  ]
+}

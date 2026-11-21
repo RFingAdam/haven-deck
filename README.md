@@ -31,7 +31,32 @@ These captures were taken from a headless browser at the official Raspberry Pi t
 <p align="center">
   <img src="docs/media/setup-framed.png" alt="Setup tab with demo mode on, local preview off, and the kiosk route enabled" width="86%">
 </p>
-<p align="center"><sub>Setup — demo mode stays on until you map buttons to your own Companion or Director.</sub></p>
+<p align="center"><sub>Setup — demo mode stays on until you map buttons to your own Companion or Director. Switch looks here too.</sub></p>
+
+### Themes
+
+`haven` is the default. It is the tight Field Kit grid: cream type, rust highlights, short scene bars. Switch looks in Setup, pass `?theme=` in the URL, or set `theme` in `config.json` or a pack's `layout.json`. A choice saved in Setup on this device wins; a `?theme=` URL wins for that visit; otherwise a pack theme is used when config is still the default.
+
+<p align="center">
+  <img src="docs/media/theme-haven.png" alt="Haven theme, the default Field Kit look" width="48%">
+  <img src="docs/media/theme-tactical-hud.png" alt="Tactical HUD theme, phosphor green on a faint grid" width="48%">
+</p>
+<p align="center"><sub>Haven (default) · Tactical HUD</sub></p>
+
+<p align="center">
+  <img src="docs/media/theme-clean-dark.png" alt="Clean Dark theme, soft corners and a blue accent" width="48%">
+  <img src="docs/media/theme-neon.png" alt="Neon theme, violet background with magenta glow" width="48%">
+</p>
+<p align="center"><sub>Clean Dark · Neon</sub></p>
+
+Tactical HUD is original styling meant to sit beside a stream overlay. It does not copy any paid pack's assets or design.
+
+#### Add your own theme
+
+1. Copy `themes/haven/theme.json` to `themes/my-look/theme.json`.
+2. Set `id` to `my-look` (lowercase letters, numbers, and hyphens only) and change the variables you want: colors (`--bg`, `--surface`, `--surface-idle`, `--surface-active`, `--text`, `--text-title`, `--text-muted`, `--accent`, `--danger`), shape (`--radius`, `--gap`, `--key-height`, `--rail-height`), type (`--font`, `--font-ui`, `--letter-spacing`), and optional `--glow` or `--grid-line`.
+3. Add `{ "id": "my-look", "label": "My Look" }` to `themes/index.json`.
+4. Restart `npm run dev` or rebuild. The new look shows up in Setup.
 
 To regenerate the images: `npm run docs:shots`.
 
@@ -104,6 +129,7 @@ Copy the folder to `packs/my-pack/`, point `packUrl` at `/packs/my-pack`, and re
 
 `layout.json` describes the touch surface:
 
+- `theme`: optional look id (`haven`, `tactical-hud`, `clean-dark`, `neon`, or one you add)
 - `sceneRail`: key ids that stay visible on every tab
 - Each key has `label`, `icon`, `tone`, and an `action`:
   - `companion`: `{ "type": "companion", "page": 1, "row": 0, "column": 1 }` (pages are 1-based; rows and columns are 0-based)

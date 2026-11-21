@@ -1,0 +1,25 @@
+{
+  "id": "tactical-hud",
+  "label": "Tactical HUD",
+  "description": "A military HUD feel that sits beside a stream overlay. Original styling; not a copy of any paid pack.",
+  "variables": {
+    "--bg": "#050806",
+    "--surface": "#0c140f",
+    "--surface-idle": "#101a14",
+    "--surface-active": "#14301c",
+    "--text": "#c6e2b4",
+    "--text-title": "#e8f8d8",
+    "--text-muted": "#6f8a6a",
+    "--accent": "#7caf4c",
+    "--danger": "#c45a3a",
+    "--radius": "0px",
+    "--gap": "4px",
+    "--font": "\"Share Tech Mono\", \"Consolas\", \"ui-monospace\", monospace",
+    "--font-ui": "\"Share Tech Mono\", \"Consolas\", \"ui-monospace\", monospace",
+    "--letter-spacing": "0.1em",
+    "--key-height": "56px",
+    "--rail-height": "46px",
+    "--glow": "0 0 0 1px rgba(124, 175, 76, 0.35)",
+    "--grid-line": "rgba(124, 175, 76, 0.12)"
+  }
+}

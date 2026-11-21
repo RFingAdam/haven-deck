@@ -1,0 +1,25 @@
+{
+  "id": "haven",
+  "label": "Haven",
+  "description": "The default Field Kit kiosk look.",
+  "variables": {
+    "--bg": "#0e1010",
+    "--surface": "#161916",
+    "--surface-idle": "#1a1c1c",
+    "--surface-active": "#2a1812",
+    "--text": "#d8c9a3",
+    "--text-title": "#f4f5f8",
+    "--text-muted": "#8c887c",
+    "--accent": "#b5562f",
+    "--danger": "#8a3a32",
+    "--radius": "2px",
+    "--gap": "6px",
+    "--font": "\"Barlow Condensed\", \"Arial Narrow\", \"Liberation Sans Narrow\", sans-serif",
+    "--font-ui": "\"Barlow Condensed\", \"Arial Narrow\", \"Liberation Sans Narrow\", sans-serif",
+    "--letter-spacing": "0.14em",
+    "--key-height": "56px",
+    "--rail-height": "46px",
+    "--glow": "none",
+    "--grid-line": "transparent"
+  }
+}
