@@ -173,3 +173,7 @@ For cinematic stream stingers, install the [Tactical Pack](https://github.com/RF
 ## Contributing
 
 Open an issue or a pull request. Do not add third-party meme samples, or audio you do not have the right to redistribute. Keep configuration examples on `127.0.0.1` or a placeholder host name, never a real machine address.
+
+## For agents
+
+See [CLAUDE.md](CLAUDE.md) and [REPOS.md](REPOS.md) for where new streaming work belongs. Do not commit secrets, LAN IPs, or private song packs.
