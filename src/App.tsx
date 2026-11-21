@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { ChevronLeft, ChevronRight, Lock, Settings } from "lucide-react";
+import { Icon } from "./components/Icon";
 import { DeckKeyButton } from "./components/DeckKeyButton";
 import { SetupPage } from "./components/SetupPage";
 import { runAction, pollCompanion } from "./lib/actions";
@@ -14,7 +15,8 @@ import {
 import { clipSrc, validateLayout, validatePack } from "./lib/pack";
 import { KIOSK_GRID_PAGE_SIZE, paginate } from "./lib/paginate";
 import { ARM_HINT, planDeckAudio } from "./lib/play-policy";
-import { gridPageSizeFromSearch, packUrlFromSearch } from "./lib/query";
+import { gridPageSizeFromSearch, packUrlFromSearch, themeFromSearch } from "./lib/query";
+import { applyTheme, DEFAULT_THEME_ID, loadTheme, loadThemeIndex, type ThemeIndexItem } from "./lib/themes";
 import type { CompanionStatus, DeckConfig, DeckKey, DeckLayout, SoundPack } from "./lib/types";
 
 const EMPTY_STATUS: CompanionStatus = {
@@ -28,6 +30,8 @@ const EMPTY_STATUS: CompanionStatus = {
 export default function App() {
   const [config, setConfig] = useState<DeckConfig>(DEFAULT_CONFIG);
   const [overrides, setOverrides] = useState<Partial<DeckConfig>>({});
+  const [themeList, setThemeList] = useState<ThemeIndexItem[]>([{ id: DEFAULT_THEME_ID, label: "Haven" }]);
+  const [armMic, setArmMic] = useState(false);
   const [layout, setLayout] = useState<DeckLayout | null>(null);
   const [pack, setPack] = useState<SoundPack | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -45,14 +49,36 @@ export default function App() {
       const file = await fetchFileConfig();
       const stored = loadStoredOverrides();
       const queryPack = packUrlFromSearch();
+      const queryTheme = themeFromSearch();
       if (cancelled) return;
       setOverrides(stored);
-      setConfig(mergeConfig(file, { ...stored, ...(queryPack ? { packUrl: queryPack } : {}) }));
+      setConfig(mergeConfig(file, {
+        ...stored,
+        ...(queryPack ? { packUrl: queryPack } : {}),
+        ...(queryTheme ? { theme: queryTheme } : {}),
+      }));
     })();
     return () => {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void loadThemeIndex().then((list) => {
+      if (!cancelled) setThemeList(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    const id = config.theme || DEFAULT_THEME_ID;
+    void loadTheme(id).then((theme) => {
+      if (theme) applyTheme(theme);
+    });
+  }, [config.theme]);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,6 +95,9 @@ export default function App() {
         setPack(nextPack);
         setLayout(nextLayout);
         setLoadError(null);
+        if (nextLayout.theme && !loadStoredOverrides().theme && !themeFromSearch()) {
+          setConfig((prev) => (prev.theme === DEFAULT_THEME_ID ? { ...prev, theme: nextLayout.theme! } : prev));
+        }
       } catch (err) {
         if (!cancelled) setLoadError(err instanceof Error ? err.message : "Could not load the pack");
       }
@@ -105,7 +134,11 @@ export default function App() {
     return activePage.keys.filter((k) => !k.pinned && !rail.has(k.id));
   }, [activePage, layout]);
 
-  const pinnedKeys = activePage?.keys.filter((k) => k.pinned) ?? [];
+  const footerKeys = useMemo(() => {
+    if (!layout) return [];
+    const byId = new Map(layout.pages.flatMap((p) => p.keys.map((k) => [k.id, k] as const)));
+    return ["clip-it", "stop-all"].map((id) => byId.get(id)).filter((k): k is DeckKey => Boolean(k));
+  }, [layout]);
   const pageSize = gridPageSizeFromSearch(KIOSK_GRID_PAGE_SIZE);
   const paged = paginate(gridKeys, gridPage, pageSize);
 
@@ -147,6 +180,10 @@ export default function App() {
         setHint(ARM_HINT);
       }
 
+      if (key.id === "clip-it") {
+        setHint("Clip It is not mapped");
+        return;
+      }
       if (key.action.type === "none") return;
       const result = await runAction(key.action, config);
       if (result.simulated) setHint(`Demo: ${key.label}`);
@@ -169,45 +206,50 @@ export default function App() {
     setConfig(await fetchFileConfig());
   };
 
+
+  const statusLine = [
+    config.simulate ? "Demo" : status.ok ? "Online" : "Offline",
+    status.recording ? "Rec" : "Rec idle",
+    status.streaming ? "Live" : "Off",
+    status.scene && status.scene !== "—" ? status.scene : null,
+    config.simulate ? "Demo mode" : "Companion",
+  ].filter(Boolean).join(" · ");
+
+  const tabCount = (layout?.pages.length ?? 0) + 1;
+
   return (
-    <div className="shell" data-testid="deck-shell">
+    <div className="shell" data-testid="deck-shell" data-theme={config.theme} style={{ ["--tab-count"]: String(tabCount) } as CSSProperties}>
       <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark" aria-hidden />
+        <div className="brand-block">
           <span className="brand-name">Haven Deck</span>
+          <span className="status-line" data-testid="connection-badge">{statusLine}</span>
         </div>
-        <nav className="tabs" aria-label="Deck pages">
-          {(layout?.pages ?? []).map((page) => (
-            <button
-              key={page.id}
-              type="button"
-              data-testid={`tab-${page.id}`}
-              className={tab === page.id ? "tab is-on" : "tab"}
-              onClick={() => {
-                setTab(page.id);
-                setGridPage(0);
-              }}
-            >
-              {page.label}
-            </button>
-          ))}
+        <div className="top-actions">
           <button
             type="button"
-            data-testid="tab-setup"
-            className={tab === "setup" ? "tab is-on" : "tab"}
-            onClick={() => setTab("setup")}
+            className={armMic ? "arm-mic is-on" : "arm-mic"}
+            aria-pressed={armMic}
+            onClick={() => {
+              setArmMic((on) => {
+                const next = !on;
+                setHint(next ? "Mic armed (local)" : "Mic idle");
+                return next;
+              });
+            }}
           >
-            Setup
+            <Icon name="mic" size={16} />
+            Arm Mic
           </button>
-        </nav>
-        <div
-          className={`badge${config.simulate ? " is-demo" : status.ok ? " is-ok" : " is-down"}`}
-          data-testid="connection-badge"
-        >
-          {config.simulate ? "Demo" : status.ok ? "Live hookup" : "Offline"}
+          <button type="button" className="icon-btn" aria-label="Lock display" onClick={() => setHint("Display lock is a kiosk hint only")}>
+            <Lock size={16} />
+          </button>
+          <button type="button" className="icon-btn" aria-label="Setup" data-testid="tab-setup-icon" onClick={() => setTab("setup")}>
+            <Settings size={16} />
+          </button>
         </div>
       </header>
 
+      {tab !== "setup" ? (
       <div className="scene-rail" aria-label="Scenes" data-testid="scene-rail">
         {railKeys.map((key) => (
           <DeckKeyButton
@@ -219,6 +261,32 @@ export default function App() {
           />
         ))}
       </div>
+      ) : <div />}
+
+      <nav className="tabs" aria-label="Deck pages">
+        {(layout?.pages ?? []).map((page) => (
+          <button
+            key={page.id}
+            type="button"
+            data-testid={`tab-${page.id}`}
+            className={tab === page.id ? "tab is-on" : "tab"}
+            onClick={() => {
+              setTab(page.id);
+              setGridPage(0);
+            }}
+          >
+            {page.label}
+          </button>
+        ))}
+        <button
+          type="button"
+          data-testid="tab-setup"
+          className={tab === "setup" ? "tab is-on" : "tab"}
+          onClick={() => setTab("setup")}
+        >
+          Setup
+        </button>
+      </nav>
 
       <main className="main">
         {loadError ? <p className="banner warn">{loadError}</p> : null}
@@ -226,46 +294,50 @@ export default function App() {
           <SetupPage
             config={config}
             pack={pack}
+            themes={themeList}
             hasOverrides={Object.keys(overrides).length > 0}
             onPatch={patchConfig}
             onReset={() => void resetConfig()}
           />
         ) : (
-          <>
-            <div className="grid" data-testid="key-grid">
-              {paged.slice.map((key) => (
-                <DeckKeyButton
-                  key={key.id}
-                  deckKey={key}
-                  status={status}
-                  pendingConfirm={confirmId === key.id}
-                  onPress={press}
-                />
-              ))}
-            </div>
-            {paged.pages > 1 ? (
-              <div className="pager" data-testid="pager">
-                <button type="button" className="pager-btn" onClick={() => setGridPage(Math.max(0, paged.page - 1))}>
-                  <ChevronLeft size={22} /> Prev
-                </button>
-                <span>
-                  {paged.page + 1} / {paged.pages}
-                </span>
-                <button
-                  type="button"
-                  className="pager-btn"
-                  onClick={() => setGridPage(Math.min(paged.pages - 1, paged.page + 1))}
-                >
-                  Next <ChevronRight size={22} />
-                </button>
-              </div>
-            ) : null}
-          </>
+          <div className="grid" data-testid="key-grid">
+            {paged.slice.map((key) => (
+              <DeckKeyButton
+                key={key.id}
+                deckKey={key}
+                status={status}
+                pendingConfirm={confirmId === key.id}
+                onPress={press}
+              />
+            ))}
+          </div>
         )}
       </main>
 
+      {tab !== "setup" && activePage && paged.pages > 1 ? (
+        <div className="pager" data-testid="pager">
+          <button type="button" className="pager-btn" onClick={() => setGridPage(Math.max(0, paged.page - 1))}>
+            <ChevronLeft size={18} /> Prev
+          </button>
+          <span className="pager-count">
+            {paged.page + 1} / {paged.pages}
+          </span>
+          <button
+            type="button"
+            className="pager-btn"
+            onClick={() => setGridPage(Math.min(paged.pages - 1, paged.page + 1))}
+          >
+            Next <ChevronRight size={18} />
+          </button>
+        </div>
+      ) : <div />}
+
       <footer className="footer">
-        {pinnedKeys.map((key) => (
+        <p className="status-msg" data-testid="status-msg">
+          <span>{hint}</span>
+          {status.scene && status.scene !== "—" ? <span className="status-sub">{status.scene}</span> : null}
+        </p>
+        {footerKeys.map((key) => (
           <DeckKeyButton
             key={key.id}
             deckKey={key}
@@ -274,8 +346,6 @@ export default function App() {
             onPress={press}
           />
         ))}
-        <p className="status-msg" data-testid="status-msg">{hint}</p>
-        {status.scene && status.scene !== "—" ? <p className="scene-name">{status.scene}</p> : null}
       </footer>
     </div>
   );

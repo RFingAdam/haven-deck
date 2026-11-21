@@ -41,7 +41,7 @@ export type DeckPage = {
 
 export type DeckLayout = {
   name: string;
-  theme: "fieldkit" | "classic";
+  theme?: string;
   sceneRail: string[];
   pages: DeckPage[];
 };
@@ -77,6 +77,7 @@ export type DeckConfig = {
   packUrl: string;
   kioskRoute: boolean;
   wantLocalPreview: boolean;
+  theme: string;
 };
 
 export type CompanionStatus = {

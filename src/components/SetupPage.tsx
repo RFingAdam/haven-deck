@@ -1,14 +1,17 @@
 import type { DeckConfig, SoundPack } from "../lib/types";
+import type { ThemeIndexItem } from "../lib/themes";
 
 export function SetupPage({
   config,
   pack,
+  themes,
   hasOverrides,
   onPatch,
   onReset,
 }: {
   config: DeckConfig;
   pack: SoundPack | null;
+  themes: ThemeIndexItem[];
   hasOverrides: boolean;
   onPatch: (patch: Partial<DeckConfig>) => void;
   onReset: () => void;
@@ -18,8 +21,7 @@ export function SetupPage({
       <h1>Setup</h1>
       <p>
         Demo mode is on by default so a first run cannot press Go Live on a real
-        stream computer. Turn it off only after you have mapped the buttons in
-        this pack to your own Companion or Director setup.
+        stream computer. Turn it off only after you have mapped this pack.
       </p>
       <label className="toggle">
         <input
@@ -45,6 +47,23 @@ export function SetupPage({
         />
         <span>Kiosk route (keeps local speakers muted unless preview is on)</span>
       </label>
+      <h1>Theme</h1>
+      <p>This device can switch looks. Packs and config.json can set a default.</p>
+      <div className="theme-picker" data-testid="theme-picker">
+        {themes.map((theme) => (
+          <button
+            key={theme.id}
+            type="button"
+            data-testid={`theme-${theme.id}`}
+            className={config.theme === theme.id ? "theme-choice is-on" : "theme-choice"}
+            aria-pressed={config.theme === theme.id}
+            onClick={() => onPatch({ theme: theme.id })}
+          >
+            {theme.label}
+            <small>{theme.id}</small>
+          </button>
+        ))}
+      </div>
       <dl className="meta">
         <dt>Companion</dt>
         <dd>{config.companionBase}</dd>
@@ -52,13 +71,9 @@ export function SetupPage({
         <dd>{config.directorBase}</dd>
         <dt>Pack</dt>
         <dd>{pack ? `${pack.name} (${pack.clips.length} clips)` : config.packUrl}</dd>
+        <dt>Theme</dt>
+        <dd>{config.theme}</dd>
       </dl>
-      {pack ? <p className="credit">{pack.credit}</p> : null}
-      <p className="fine">
-        Edit <code>config.json</code> next to the built app (or in <code>public/</code>{" "}
-        during development) to change loopback URLs. This screen only stores
-        the toggles above on this device.
-      </p>
       {hasOverrides ? (
         <button type="button" className="pager-btn" onClick={onReset}>
           Clear device overrides

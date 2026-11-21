@@ -15,7 +15,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 
 function startServer() {
   return new Promise((resolveStart, reject) => {
-    const child = spawn("npm", ["start"], { cwd: root, stdio: ["ignore", "pipe", "pipe"] });
+    const child = spawn("npm", ["start"], { cwd: root, stdio: ["ignore", "pipe", "pipe"], detached: true });
     const onData = (buf) => {
       const text = buf.toString();
       if (text.includes(`http://127.0.0.1:${port}`) || text.includes(`http://0.0.0.0:${port}`)) {
@@ -57,9 +57,22 @@ await page.getByTestId("deck-shell").waitFor();
 await shot(page, "tab-live", "live.png");
 await shot(page, "tab-sounds", "sounds.png");
 await shot(page, "tab-setup", "setup.png");
+
+const themeIds = ["haven", "tactical-hud", "clean-dark", "neon"];
+for (const id of themeIds) {
+  await page.goto(`${baseURL}/?theme=${id}`, { waitUntil: "networkidle" });
+  await page.getByTestId("deck-shell").waitFor();
+  await page.waitForFunction((themeId) => document.documentElement.dataset.theme === themeId, id);
+  await page.waitForTimeout(200);
+  const themePath = resolve(outDir, `theme-${id}.png`);
+  await page.screenshot({ path: themePath, type: "png" });
+  console.log("wrote", themePath);
+}
+
 await browser.close();
-server.kill("SIGTERM");
-try { server.kill("SIGKILL"); } catch {}
+try { process.kill(-server.pid, "SIGTERM"); } catch {}
+await new Promise((r) => setTimeout(r, 300));
+try { process.kill(-server.pid, "SIGKILL"); } catch {}
 
 const { spawnSync } = await import("node:child_process");
 const framed = spawnSync("python3", [resolve(root, "scripts/frame-hero.py")], {

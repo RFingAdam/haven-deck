@@ -1,6 +1,6 @@
 {
   "name": "Starter",
-  "theme": "fieldkit",
+  "theme": "haven",
   "sceneRail": [
     "sc-game",
     "sc-chat",
@@ -83,7 +83,7 @@
         },
         {
           "id": "sc-game",
-          "label": "Game",
+          "label": "Gameplay",
           "icon": "gamepad-2",
           "tone": "steel",
           "action": {
@@ -95,7 +95,7 @@
           "sublabel": "Scene",
           "feedback": {
             "kind": "scene",
-            "name": "Game"
+            "name": "Gameplay"
           },
           "previewSrc": "sounds/scene.wav",
           "previewClipId": "scene",
@@ -103,7 +103,7 @@
         },
         {
           "id": "sc-chat",
-          "label": "Chat",
+          "label": "Talking",
           "icon": "message-square",
           "tone": "steel",
           "action": {
@@ -115,7 +115,7 @@
           "sublabel": "Scene",
           "feedback": {
             "kind": "scene",
-            "name": "Chat"
+            "name": "Talking"
           },
           "previewSrc": "sounds/scene.wav",
           "previewClipId": "scene",
@@ -123,7 +123,7 @@
         },
         {
           "id": "sc-brb",
-          "label": "BRB",
+          "label": "BRB / Pause",
           "icon": "coffee",
           "tone": "idle",
           "action": {
@@ -180,6 +180,17 @@
           "previewSrc": "sounds/scene.wav",
           "previewClipId": "scene",
           "previewDurationMs": 500
+        },
+        {
+          "id": "clip-it",
+          "label": "Clip It",
+          "icon": "circle-dot",
+          "tone": "steel",
+          "action": {
+            "type": "none"
+          },
+          "sublabel": "Not mapped",
+          "pinned": true
         },
         {
           "id": "stop-all",

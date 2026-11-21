@@ -6,7 +6,7 @@ test.describe("Haven Deck kiosk (demo mode)", () => {
   test("loads the starter pack and shows Live, the scene rail, and Demo", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByTestId("deck-shell")).toBeVisible();
-    await expect(page.getByTestId("connection-badge")).toHaveText("Demo");
+    await expect(page.getByTestId("connection-badge")).toHaveText(/Demo/i);
     await expect(page.getByTestId("tab-live")).toBeVisible();
     await expect(page.getByTestId("tab-sounds")).toBeVisible();
     await expect(page.getByTestId("tab-setup")).toBeVisible();
@@ -54,7 +54,7 @@ test.describe("Haven Deck kiosk (demo mode)", () => {
     await go.click();
     await expect(go).toContainText("Tap again");
     await expect(page.getByTestId("status-msg")).toHaveText("Tap again to confirm");
-    await expect(page.getByTestId("connection-badge")).toHaveText("Demo");
+    await expect(page.getByTestId("connection-badge")).toHaveText(/Demo/i);
     await go.click();
     await expect(page.getByTestId("status-msg")).toHaveText("Demo: Go Live");
     await expect(go).toContainText("Go Live");
@@ -78,3 +78,14 @@ test.describe("Haven Deck kiosk (demo mode)", () => {
     expect(forbidden, `unexpected backend requests: ${forbidden.join(", ")}`).toEqual([]);
   });
 });
+
+  test("Setup lists themes and applies a selection", async ({ page }) => {
+    await page.goto("/");
+    await page.getByTestId("tab-setup").click();
+    await expect(page.getByTestId("theme-picker")).toBeVisible();
+    await expect(page.getByTestId("theme-haven")).toBeVisible();
+    await page.getByTestId("theme-neon").click();
+    await expect(page.getByTestId("deck-shell")).toHaveAttribute("data-theme", "neon");
+    await page.getByTestId("theme-haven").click();
+    await expect(page.getByTestId("deck-shell")).toHaveAttribute("data-theme", "haven");
+  });

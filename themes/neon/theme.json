@@ -1,0 +1,25 @@
+{
+  "id": "neon",
+  "label": "Neon",
+  "description": "Deep violet with magenta and cyan highlights.",
+  "variables": {
+    "--bg": "#0a0612",
+    "--surface": "#160b24",
+    "--surface-idle": "#1c1030",
+    "--surface-active": "#3a1050",
+    "--text": "#f4e8ff",
+    "--text-title": "#ffffff",
+    "--text-muted": "#a48bb8",
+    "--accent": "#ff2ea6",
+    "--danger": "#ff5e5e",
+    "--radius": "6px",
+    "--gap": "6px",
+    "--font": "\"Exo 2\", \"Segoe UI\", sans-serif",
+    "--font-ui": "\"Exo 2\", \"Segoe UI\", sans-serif",
+    "--letter-spacing": "0.12em",
+    "--key-height": "56px",
+    "--rail-height": "46px",
+    "--glow": "0 0 12px rgba(255, 46, 166, 0.45)",
+    "--grid-line": "rgba(0, 229, 255, 0.12)"
+  }
+}

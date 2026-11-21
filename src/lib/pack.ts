@@ -63,7 +63,7 @@ export function validateLayout(raw: unknown): DeckLayout {
   if (!Array.isArray(pages) || pages.length < 1) {
     throw new Error("layout.json must list at least one page");
   }
-  const theme = l.theme === "classic" ? "classic" : "fieldkit";
+  const theme = typeof l.theme === "string" && l.theme.trim() ? l.theme.trim().toLowerCase() : "haven";
   const sceneRail = Array.isArray(l.sceneRail)
     ? l.sceneRail.filter((id): id is string => typeof id === "string")
     : [];
