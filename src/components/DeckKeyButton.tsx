@@ -19,6 +19,8 @@ export function DeckKeyButton({
   return (
     <button
       type="button"
+      data-testid={`key-${deckKey.id}`}
+      aria-pressed={pendingConfirm || hot}
       className={`key tone-${deckKey.tone}${hot ? " is-hot" : ""}${pendingConfirm ? " is-confirm" : ""}`}
       onClick={() => onPress(deckKey)}
     >
