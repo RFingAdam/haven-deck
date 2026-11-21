@@ -2,13 +2,16 @@
 
 A DIY touchscreen stream deck for a Raspberry Pi, a tablet, or a browser. Load your own sounds, scenes, and buttons. An alternative to a Stream Deck or Elgato console, not a replacement for one if you already like yours.
 
-[![CI](https://github.com/RFingAdam/haven-deck/actions/workflows/ci.yml/badge.svg)](https://github.com/RFingAdam/haven-deck/actions/workflows/ci.yml)
-[![code: MIT](https://img.shields.io/badge/code-MIT-22c55e)](LICENSE)
-[![assets: CC BY 4.0](https://img.shields.io/badge/assets-CC%20BY%204.0-f2b233)](assets/LICENSE)
+<p align="center">
+  <a href="https://github.com/RFingAdam/haven-deck/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/RFingAdam/haven-deck/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="MIT" src="https://img.shields.io/badge/code-MIT-22c55e"></a>
+  <a href="assets/LICENSE"><img alt="assets CC BY 4.0" src="https://img.shields.io/badge/assets-CC%20BY%204.0-f2b233"></a>
+  <br>
+  <a href="https://www.twitch.tv/swampbewdy"><img alt="Watch live on Twitch" src="https://img.shields.io/badge/watch%20live-twitch.tv%2Fswampbewdy-9146FF?logo=twitch&logoColor=white&style=for-the-badge"></a>
+  <a href="https://www.youtube.com/@SwampBewdy"><img alt="YouTube" src="https://img.shields.io/badge/YouTube-%40SwampBewdy-FF0000?logo=youtube&logoColor=white&style=for-the-badge"></a>
+</p>
 
 **This is not the paid "HAVEN Deck" Streamlabs overlay pack**, and it does not include that pack or the paid "Protocol HUD" overlay. Those are third-party products and are not redistributed here. The [Tactical Deck](https://github.com/RFingAdam/tactical-deck) repo has a separate, original OCR overlay also called Protocol HUD. That overlay is Adam's own code. This repo is only the open-source kiosk.
-
-Watch it in use on [Twitch](https://www.twitch.tv/swampbewdy) or [YouTube](https://www.youtube.com/@SwampBewdy).
 
 <p align="center">
   <img src="docs/media/hero.png" alt="Haven Deck on an 800 by 480 kiosk screen in a rounded bezel, Live tab, demo mode" width="100%">
