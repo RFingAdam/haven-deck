@@ -93,6 +93,8 @@ npm start
 
 The kiosk server binds to `http://127.0.0.1:4173` and proxies Companion and Director on the same origin so the browser does not have to deal with CORS. Edit `config.json` to point `companionBase` and `directorBase` at your stream computer, then turn Demo mode off.
 
+For the common layouts — a browser on one PC, everything on the stream PC with OBS or Streamlabs, or a Pi or tablet talking to the stream PC — see [Common setups](docs/setup.md).
+
 ## Put it on a Raspberry Pi
 
 The official 800×480 Raspberry Pi touchscreen is the layout this kiosk is sized for. Tablets and desktop browsers work too; a wider window gets larger keys.
@@ -106,7 +108,7 @@ The kiosk route does not play sound through the Pi's speakers unless you turn on
 
 ## Hook it up to a stream
 
-Haven Deck talks HTTP. You can use any combination of these:
+Haven Deck talks HTTP. You can use any combination of these (details for each layout, including Director allowlists and a Windows firewall example, are in [Common setups](docs/setup.md)):
 
 | You want | What to run | What the deck does |
 |---|---|---|
