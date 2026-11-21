@@ -1,0 +1,11 @@
+{
+  "simulate": true,
+  "companionBase": "http://127.0.0.1:8000",
+  "companionLabel": "slobs",
+  "directorBase": "http://127.0.0.1:8781",
+  "packUrl": "/packs/starter",
+  "kioskRoute": true,
+  "wantLocalPreview": false,
+  "bind": "127.0.0.1",
+  "port": 4173
+}

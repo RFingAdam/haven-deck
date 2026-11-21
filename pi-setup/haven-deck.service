@@ -1,0 +1,14 @@
+[Unit]
+Description=Haven Deck local kiosk server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/haven-deck
+ExecStart=/usr/bin/node server/kiosk-server.mjs
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

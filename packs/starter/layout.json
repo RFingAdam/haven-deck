@@ -1,0 +1,287 @@
+{
+  "name": "Starter",
+  "theme": "fieldkit",
+  "sceneRail": [
+    "sc-game",
+    "sc-chat",
+    "sc-brb",
+    "sc-start",
+    "sc-end"
+  ],
+  "pages": [
+    {
+      "id": "live",
+      "label": "Live",
+      "keys": [
+        {
+          "id": "go-live",
+          "label": "Go Live",
+          "icon": "radio",
+          "tone": "live",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 0,
+            "column": 1
+          },
+          "sublabel": "Double-tap",
+          "confirmMs": 2500,
+          "feedback": {
+            "kind": "stream_live"
+          },
+          "previewSrc": "sounds/go.wav",
+          "previewClipId": "go",
+          "previewDurationMs": 400
+        },
+        {
+          "id": "end-stream",
+          "label": "End Stream",
+          "icon": "square",
+          "tone": "warn",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 0,
+            "column": 2
+          },
+          "feedback": {
+            "kind": "stream_live"
+          }
+        },
+        {
+          "id": "rec-start",
+          "label": "Start Rec",
+          "icon": "circle-dot",
+          "tone": "live",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 0,
+            "column": 3
+          },
+          "feedback": {
+            "kind": "recording"
+          },
+          "previewSrc": "sounds/rec.wav",
+          "previewClipId": "rec",
+          "previewDurationMs": 160
+        },
+        {
+          "id": "rec-stop",
+          "label": "Stop Rec",
+          "icon": "square",
+          "tone": "warn",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 0,
+            "column": 4
+          },
+          "feedback": {
+            "kind": "recording"
+          }
+        },
+        {
+          "id": "sc-game",
+          "label": "Game",
+          "icon": "gamepad-2",
+          "tone": "steel",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 2,
+            "column": 1
+          },
+          "sublabel": "Scene",
+          "feedback": {
+            "kind": "scene",
+            "name": "Game"
+          },
+          "previewSrc": "sounds/scene.wav",
+          "previewClipId": "scene",
+          "previewDurationMs": 500
+        },
+        {
+          "id": "sc-chat",
+          "label": "Chat",
+          "icon": "message-square",
+          "tone": "steel",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 2,
+            "column": 2
+          },
+          "sublabel": "Scene",
+          "feedback": {
+            "kind": "scene",
+            "name": "Chat"
+          },
+          "previewSrc": "sounds/scene.wav",
+          "previewClipId": "scene",
+          "previewDurationMs": 500
+        },
+        {
+          "id": "sc-brb",
+          "label": "BRB",
+          "icon": "coffee",
+          "tone": "idle",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 1,
+            "column": 2
+          },
+          "sublabel": "Scene",
+          "feedback": {
+            "kind": "scene",
+            "name": "BRB"
+          },
+          "previewSrc": "sounds/scene.wav",
+          "previewClipId": "scene",
+          "previewDurationMs": 500
+        },
+        {
+          "id": "sc-start",
+          "label": "Starting",
+          "icon": "clapperboard",
+          "tone": "steel",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 1,
+            "column": 1
+          },
+          "sublabel": "Scene",
+          "feedback": {
+            "kind": "scene",
+            "name": "Starting"
+          },
+          "previewSrc": "sounds/scene.wav",
+          "previewClipId": "scene",
+          "previewDurationMs": 500
+        },
+        {
+          "id": "sc-end",
+          "label": "Ending",
+          "icon": "log-out",
+          "tone": "warn",
+          "action": {
+            "type": "companion",
+            "page": 1,
+            "row": 1,
+            "column": 3
+          },
+          "sublabel": "Scene",
+          "feedback": {
+            "kind": "scene",
+            "name": "Ending"
+          },
+          "previewSrc": "sounds/scene.wav",
+          "previewClipId": "scene",
+          "previewDurationMs": 500
+        },
+        {
+          "id": "stop-all",
+          "label": "Stop All",
+          "icon": "square",
+          "tone": "warn",
+          "action": {
+            "type": "http",
+            "method": "POST",
+            "url": "/director/stop"
+          },
+          "sublabel": "Clips and combos",
+          "pinned": true,
+          "previewSrc": "sounds/stop.wav",
+          "previewClipId": "stop",
+          "previewDurationMs": 320
+        }
+      ]
+    },
+    {
+      "id": "sounds",
+      "label": "Sounds",
+      "keys": [
+        {
+          "id": "tap",
+          "label": "Tap",
+          "icon": "volume-2",
+          "tone": "steel",
+          "action": {
+            "type": "play",
+            "clipId": "tap"
+          },
+          "previewSrc": "sounds/tap.wav",
+          "previewClipId": "tap",
+          "previewDurationMs": 180
+        },
+        {
+          "id": "confirm",
+          "label": "Confirm",
+          "icon": "volume-2",
+          "tone": "steel",
+          "action": {
+            "type": "play",
+            "clipId": "confirm"
+          },
+          "previewSrc": "sounds/confirm.wav",
+          "previewClipId": "confirm",
+          "previewDurationMs": 420
+        },
+        {
+          "id": "go",
+          "label": "Go",
+          "icon": "volume-2",
+          "tone": "steel",
+          "action": {
+            "type": "play",
+            "clipId": "go"
+          },
+          "previewSrc": "sounds/go.wav",
+          "previewClipId": "go",
+          "previewDurationMs": 400
+        },
+        {
+          "id": "rec",
+          "label": "Rec",
+          "icon": "volume-2",
+          "tone": "steel",
+          "action": {
+            "type": "play",
+            "clipId": "rec"
+          },
+          "previewSrc": "sounds/rec.wav",
+          "previewClipId": "rec",
+          "previewDurationMs": 160
+        },
+        {
+          "id": "scene",
+          "label": "Scene",
+          "icon": "volume-2",
+          "tone": "steel",
+          "action": {
+            "type": "play",
+            "clipId": "scene"
+          },
+          "previewSrc": "sounds/scene.wav",
+          "previewClipId": "scene",
+          "previewDurationMs": 500
+        },
+        {
+          "id": "stop",
+          "label": "Stop",
+          "icon": "square",
+          "tone": "warn",
+          "action": {
+            "type": "play",
+            "clipId": "stop"
+          },
+          "previewSrc": "sounds/stop.wav",
+          "previewClipId": "stop",
+          "previewDurationMs": 320
+        }
+      ]
+    }
+  ]
+}

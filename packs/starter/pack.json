@@ -1,0 +1,70 @@
+{
+  "name": "Haven Deck Starter",
+  "version": "1.0.0",
+  "license": "CC-BY-4.0",
+  "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0",
+  "author": "SwampBewdy",
+  "rate": 48000,
+  "clips": [
+    {
+      "id": "tap",
+      "label": "Tap",
+      "category": "UI",
+      "file": "sounds/tap.wav",
+      "seconds": 0.18,
+      "usage": "A short button tick.",
+      "license": "CC-BY-4.0",
+      "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0"
+    },
+    {
+      "id": "confirm",
+      "label": "Confirm",
+      "category": "UI",
+      "file": "sounds/confirm.wav",
+      "seconds": 0.42,
+      "usage": "A two-tone confirmation.",
+      "license": "CC-BY-4.0",
+      "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0"
+    },
+    {
+      "id": "go",
+      "label": "Go",
+      "category": "UI",
+      "file": "sounds/go.wav",
+      "seconds": 0.4,
+      "usage": "A rising cue for going live after confirm.",
+      "license": "CC-BY-4.0",
+      "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0"
+    },
+    {
+      "id": "rec",
+      "label": "Rec",
+      "category": "UI",
+      "file": "sounds/rec.wav",
+      "seconds": 0.16,
+      "usage": "A short record blip.",
+      "license": "CC-BY-4.0",
+      "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0"
+    },
+    {
+      "id": "scene",
+      "label": "Scene",
+      "category": "UI",
+      "file": "sounds/scene.wav",
+      "seconds": 0.5,
+      "usage": "A soft scene-change chime.",
+      "license": "CC-BY-4.0",
+      "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0"
+    },
+    {
+      "id": "stop",
+      "label": "Stop",
+      "category": "UI",
+      "file": "sounds/stop.wav",
+      "seconds": 0.32,
+      "usage": "A descending stop cue.",
+      "license": "CC-BY-4.0",
+      "credit": "Haven Deck starter pack by SwampBewdy (twitch.tv/swampbewdy), CC BY 4.0"
+    }
+  ]
+}
